@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // Import de Banco de Dados JDBC
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 
 @SpringBootApplication
 public class GerenciadorNomesApplication implements CommandLineRunner {
@@ -20,19 +19,18 @@ public class GerenciadorNomesApplication implements CommandLineRunner {
     public void run(String... args) {
 
         // Conexao com banco de dados
-        String url = "jdbc:h2:file:./data/banco_dados";
-        String usuario = "admin";
-        String senha = "admin";
+        String url = "jdbc:postgresql://aws-0-us-east-2.pooler.supabase.com:5432/postgres?sslmode=require";
+        String usuario = "postgres.vqasccplvycvfsgeksjl";
+        String senha = System.getenv("SUPABASE_DB_PASSWORD");
+
+        if (senha == null || senha.isBlank()) {
+            throw new IllegalStateException(
+                "A variável SUPABASE_DB_PASSWORD não foi definida"
+            );
+        }
 
         try (Connection connection =
-                DriverManager.getConnection(url, usuario, senha);
-            Statement statement = connection.createStatement()) {
-
-            statement.execute("""
-                CREATE TABLE IF NOT EXISTS nomes (
-                    nome VARCHAR(256) NOT NULL UNIQUE
-                )
-                """);
+                DriverManager.getConnection(url, usuario, senha)) {
             
             codigoAnterior(connection);
 

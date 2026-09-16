@@ -28,7 +28,7 @@
 
         <!-- Será utilizada posteriormente na migração para JDBC + H2. -->
         <dependency>
-            <groupId>org.h2database</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
